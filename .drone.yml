@@ -312,13 +312,6 @@ steps:
     username:
       from_secret: docker_username
 
-- name: microbadger
-  pull: always
-  image: plugins/webhook
-  settings:
-    urls:
-      from_secret: microbadger_docker
-
 trigger:
   ref:
   - refs/heads/master
@@ -583,13 +576,6 @@ steps:
     spec: docker/ecr/manifest.tmpl
     username:
       from_secret: docker_username
-
-- name: microbadger
-  pull: always
-  image: plugins/webhook
-  settings:
-    urls:
-      from_secret: microbadger_ecr
 
 trigger:
   ref:

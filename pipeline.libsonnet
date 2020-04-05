@@ -186,14 +186,6 @@ local golang_image(os, version) =
             auto_tag: true,
           },
         },
-        {
-          name: 'microbadger',
-          image: 'plugins/webhook',
-          pull: 'always',
-          settings: {
-            urls: { from_secret: 'microbadger_' + name },
-          },
-        },
       ],
       depends_on: [x + '-' + name for x in depends_on],
       trigger: {
