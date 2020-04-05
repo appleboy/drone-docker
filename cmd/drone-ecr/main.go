@@ -21,15 +21,15 @@ const defaultRegion = "us-east-1"
 
 func main() {
 	var (
-		repo             = getenv("PLUGIN_REPO")
-		registry         = getenv("PLUGIN_REGISTRY")
-		region           = getenv("PLUGIN_REGION", "ECR_REGION", "AWS_REGION")
-		key              = getenv("PLUGIN_ACCESS_KEY", "ECR_ACCESS_KEY", "AWS_ACCESS_KEY_ID")
-		secret           = getenv("PLUGIN_SECRET_KEY", "ECR_SECRET_KEY", "AWS_SECRET_ACCESS_KEY")
-		create           = parseBoolOrDefault(false, getenv("PLUGIN_CREATE_REPOSITORY", "ECR_CREATE_REPOSITORY"))
-		lifecyclePolicy  = getenv("PLUGIN_LIFECYCLE_POLICY")
-		repositoryPolicy = getenv("PLUGIN_REPOSITORY_POLICY")
-		assumeRole       = getenv("PLUGIN_ASSUME_ROLE")
+		repo             = getenv("PLUGIN_REPO", "INPUT_REPO")
+		registry         = getenv("PLUGIN_REGISTRY", "INPUT_REGISTRY")
+		region           = getenv("PLUGIN_REGION", "ECR_REGION", "AWS_REGION", "INPUT_REGION")
+		key              = getenv("PLUGIN_ACCESS_KEY", "ECR_ACCESS_KEY", "AWS_ACCESS_KEY_ID", "INPUT_ACCESS_KEY")
+		secret           = getenv("PLUGIN_SECRET_KEY", "ECR_SECRET_KEY", "AWS_SECRET_ACCESS_KEY", "INPUT_SECRET_KEY")
+		create           = parseBoolOrDefault(false, getenv("PLUGIN_CREATE_REPOSITORY", "ECR_CREATE_REPOSITORY", "INPUT_CREATE_REPOSITORY"))
+		lifecyclePolicy  = getenv("PLUGIN_LIFECYCLE_POLICY", "INPUT_LIFECYCLE_POLICY")
+		repositoryPolicy = getenv("PLUGIN_REPOSITORY_POLICY", "INPUT_REPOSITORY_POLICY")
+		assumeRole       = getenv("PLUGIN_ASSUME_ROLE", "INPUT_ASSUME_ROLE")
 	)
 
 	// set the region
