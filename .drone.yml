@@ -41,6 +41,296 @@ trigger:
 
 ---
 kind: pipeline
+name: linux-amd64-docker
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.11
+  commands:
+  - go build -v -ldflags "-X main.version=${DRONE_COMMIT_SHA:0:8}" -a -tags netgo -o release/linux/amd64/drone-docker ./cmd/drone-docker
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.11
+  commands:
+  - go build -v -ldflags "-X main.version=${DRONE_TAG##v}" -a -tags netgo -o release/linux/amd64/drone-docker ./cmd/drone-docker
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.11
+  commands:
+  - ./release/linux/amd64/drone-docker --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    daemon_off: false
+    dockerfile: docker/docker/Dockerfile.linux.amd64
+    dry_run: true
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker
+    tags: linux-amd64
+    username:
+      from_secret: docker_username
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    auto_tag: true
+    auto_tag_suffix: linux-amd64
+    daemon_off: false
+    dockerfile: docker/docker/Dockerfile.linux.amd64
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: linux-arm64-docker
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.11
+  commands:
+  - go build -v -ldflags "-X main.version=${DRONE_COMMIT_SHA:0:8}" -a -tags netgo -o release/linux/arm64/drone-docker ./cmd/drone-docker
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.11
+  commands:
+  - go build -v -ldflags "-X main.version=${DRONE_TAG##v}" -a -tags netgo -o release/linux/arm64/drone-docker ./cmd/drone-docker
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.11
+  commands:
+  - ./release/linux/arm64/drone-docker --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-arm64
+  settings:
+    daemon_off: false
+    dockerfile: docker/docker/Dockerfile.linux.arm64
+    dry_run: true
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker
+    tags: linux-arm64
+    username:
+      from_secret: docker_username
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-arm64
+  settings:
+    auto_tag: true
+    auto_tag_suffix: linux-arm64
+    daemon_off: false
+    dockerfile: docker/docker/Dockerfile.linux.arm64
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: linux-arm-docker
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.11
+  commands:
+  - go build -v -ldflags "-X main.version=${DRONE_COMMIT_SHA:0:8}" -a -tags netgo -o release/linux/arm/drone-docker ./cmd/drone-docker
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.11
+  commands:
+  - go build -v -ldflags "-X main.version=${DRONE_TAG##v}" -a -tags netgo -o release/linux/arm/drone-docker ./cmd/drone-docker
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.11
+  commands:
+  - ./release/linux/arm/drone-docker --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-arm
+  settings:
+    daemon_off: false
+    dockerfile: docker/docker/Dockerfile.linux.arm
+    dry_run: true
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker
+    tags: linux-arm
+    username:
+      from_secret: docker_username
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-arm
+  settings:
+    auto_tag: true
+    auto_tag_suffix: linux-arm
+    daemon_off: false
+    dockerfile: docker/docker/Dockerfile.linux.arm
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: notifications-docker
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: manifest
+  pull: always
+  image: plugins/manifest
+  settings:
+    auto_tag: true
+    ignore_missing: true
+    password:
+      from_secret: docker_password
+    spec: docker/docker/manifest.tmpl
+    username:
+      from_secret: docker_username
+
+- name: microbadger
+  pull: always
+  image: plugins/webhook
+  settings:
+    urls:
+      from_secret: microbadger_docker
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+
+depends_on:
+- linux-amd64-docker
+- linux-arm64-docker
+- linux-arm-docker
+
+---
+kind: pipeline
 name: linux-amd64-ecr
 
 platform:
@@ -75,14 +365,14 @@ steps:
 
 - name: dryrun
   pull: always
-  image: appleboy/drone-docker:linux-amd64
+  image: plugins/docker:linux-amd64
   settings:
     daemon_off: false
     dockerfile: docker/ecr/Dockerfile.linux.amd64
     dry_run: true
     password:
       from_secret: docker_password
-    repo: plugins/ecr
+    repo: appleboy/ecr
     tags: linux-amd64
     username:
       from_secret: docker_username
@@ -92,7 +382,7 @@ steps:
 
 - name: publish
   pull: always
-  image: appleboy/drone-docker:linux-amd64
+  image: plugins/docker:linux-amd64
   settings:
     auto_tag: true
     auto_tag_suffix: linux-amd64
@@ -100,7 +390,7 @@ steps:
     dockerfile: docker/ecr/Dockerfile.linux.amd64
     password:
       from_secret: docker_password
-    repo: plugins/ecr
+    repo: appleboy/ecr
     username:
       from_secret: docker_username
   when:
@@ -153,14 +443,14 @@ steps:
 
 - name: dryrun
   pull: always
-  image: appleboy/drone-docker:linux-arm64
+  image: plugins/docker:linux-arm64
   settings:
     daemon_off: false
     dockerfile: docker/ecr/Dockerfile.linux.arm64
     dry_run: true
     password:
       from_secret: docker_password
-    repo: plugins/ecr
+    repo: appleboy/ecr
     tags: linux-arm64
     username:
       from_secret: docker_username
@@ -170,7 +460,7 @@ steps:
 
 - name: publish
   pull: always
-  image: appleboy/drone-docker:linux-arm64
+  image: plugins/docker:linux-arm64
   settings:
     auto_tag: true
     auto_tag_suffix: linux-arm64
@@ -178,7 +468,7 @@ steps:
     dockerfile: docker/ecr/Dockerfile.linux.arm64
     password:
       from_secret: docker_password
-    repo: plugins/ecr
+    repo: appleboy/ecr
     username:
       from_secret: docker_username
   when:
@@ -231,14 +521,14 @@ steps:
 
 - name: dryrun
   pull: always
-  image: appleboy/drone-docker:linux-arm
+  image: plugins/docker:linux-arm
   settings:
     daemon_off: false
     dockerfile: docker/ecr/Dockerfile.linux.arm
     dry_run: true
     password:
       from_secret: docker_password
-    repo: plugins/ecr
+    repo: appleboy/ecr
     tags: linux-arm
     username:
       from_secret: docker_username
@@ -248,7 +538,7 @@ steps:
 
 - name: publish
   pull: always
-  image: appleboy/drone-docker:linux-arm
+  image: plugins/docker:linux-arm
   settings:
     auto_tag: true
     auto_tag_suffix: linux-arm
@@ -256,7 +546,7 @@ steps:
     dockerfile: docker/ecr/Dockerfile.linux.arm
     password:
       from_secret: docker_password
-    repo: plugins/ecr
+    repo: appleboy/ecr
     username:
       from_secret: docker_username
   when:
