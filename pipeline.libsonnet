@@ -116,7 +116,7 @@ local golang_image(os, version) =
         },
         {
           name: 'dryrun',
-          image: 'plugins/docker:' + tag,
+          image: 'appleboy/drone-docker:' + tag,
           pull: 'always',
           settings: {
             dry_run: true,
@@ -134,7 +134,7 @@ local golang_image(os, version) =
         },
         {
           name: 'publish',
-          image: 'plugins/docker:' + tag,
+          image: 'appleboy/drone-docker:' + tag,
           pull: 'always',
           settings: {
             auto_tag: true,
