@@ -88,7 +88,7 @@ steps:
     dry_run: true
     password:
       from_secret: docker_password
-    repo: appleboy/docker
+    repo: appleboy/drone-docker
     tags: linux-amd64
     username:
       from_secret: docker_username
@@ -106,7 +106,7 @@ steps:
     dockerfile: docker/docker/Dockerfile.linux.amd64
     password:
       from_secret: docker_password
-    repo: appleboy/docker
+    repo: appleboy/drone-docker
     username:
       from_secret: docker_username
   when:
@@ -172,7 +172,7 @@ steps:
     dry_run: true
     password:
       from_secret: docker_password
-    repo: appleboy/docker
+    repo: appleboy/drone-docker
     tags: linux-arm64
     username:
       from_secret: docker_username
@@ -190,7 +190,7 @@ steps:
     dockerfile: docker/docker/Dockerfile.linux.arm64
     password:
       from_secret: docker_password
-    repo: appleboy/docker
+    repo: appleboy/drone-docker
     username:
       from_secret: docker_username
   when:
@@ -256,7 +256,7 @@ steps:
     dry_run: true
     password:
       from_secret: docker_password
-    repo: appleboy/docker
+    repo: appleboy/drone-docker
     tags: linux-arm
     username:
       from_secret: docker_username
@@ -274,7 +274,7 @@ steps:
     dockerfile: docker/docker/Dockerfile.linux.arm
     password:
       from_secret: docker_password
-    repo: appleboy/docker
+    repo: appleboy/drone-docker
     username:
       from_secret: docker_username
   when:
@@ -372,7 +372,7 @@ steps:
     dry_run: true
     password:
       from_secret: docker_password
-    repo: appleboy/ecr
+    repo: appleboy/drone-ecr
     tags: linux-amd64
     username:
       from_secret: docker_username
@@ -390,7 +390,7 @@ steps:
     dockerfile: docker/ecr/Dockerfile.linux.amd64
     password:
       from_secret: docker_password
-    repo: appleboy/ecr
+    repo: appleboy/drone-ecr
     username:
       from_secret: docker_username
   when:
@@ -450,7 +450,7 @@ steps:
     dry_run: true
     password:
       from_secret: docker_password
-    repo: appleboy/ecr
+    repo: appleboy/drone-ecr
     tags: linux-arm64
     username:
       from_secret: docker_username
@@ -468,7 +468,7 @@ steps:
     dockerfile: docker/ecr/Dockerfile.linux.arm64
     password:
       from_secret: docker_password
-    repo: appleboy/ecr
+    repo: appleboy/drone-ecr
     username:
       from_secret: docker_username
   when:
@@ -528,7 +528,7 @@ steps:
     dry_run: true
     password:
       from_secret: docker_password
-    repo: appleboy/ecr
+    repo: appleboy/drone-ecr
     tags: linux-arm
     username:
       from_secret: docker_username
@@ -546,7 +546,7 @@ steps:
     dockerfile: docker/ecr/Dockerfile.linux.arm
     password:
       from_secret: docker_password
-    repo: appleboy/ecr
+    repo: appleboy/drone-ecr
     username:
       from_secret: docker_username
   when:
