@@ -124,13 +124,13 @@ func main() {
 			Name:     "tags",
 			Usage:    "build tags",
 			Value:    &cli.StringSlice{"latest"},
-			EnvVar:   "PLUGIN_TAG,PLUGIN_TAGS,INPUT_TAG",
+			EnvVar:   "PLUGIN_TAG,PLUGIN_TAGS,INPUT_TAGS",
 			FilePath: ".tags",
 		},
 		cli.BoolFlag{
 			Name:   "tags.auto",
 			Usage:  "default build tags",
-			EnvVar: "PLUGIN_DEFAULT_TAGS,PLUGIN_AUTO_TAG,INPUT_DEFAULT_TAGS",
+			EnvVar: "PLUGIN_DEFAULT_TAGS,PLUGIN_AUTO_TAG,INPUT_AUTO_TAG",
 		},
 		cli.StringFlag{
 			Name:   "tags.suffix",
